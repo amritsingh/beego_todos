@@ -50,7 +50,7 @@
                             aria-labelledby="panelsStayOpen-heading-{{.Id}}">
                             <div class="accordion-body">
                                 {{.Detail}}
-                                <a class="btn btn-outline-primary" href="/todos/{{.Id}}" role="button">View</a>
+                                <p><a class="btn btn-outline-primary" href="/todos/{{.Id}}" role="button">View</a></p>
                             </div>
                         </div>
                     </div>
