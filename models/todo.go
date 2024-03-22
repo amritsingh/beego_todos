@@ -68,8 +68,4 @@ func TodosMarkDelete(id uint64) {
 	// TODO:
 	// To mark a TODO deleted, set deleted_at to current time.
 	// Don't foget to set updated_at to current time.
-	todo := TodosFind(id)
-	todo.DeletedAt = time.Now()
-	todo.UpdatedAt = time.Now()
-	o.Update(todo)
 }
