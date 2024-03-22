@@ -26,10 +26,10 @@ func (c *TodosController) TodosNewForm() {
 }
 
 func (c *TodosController) TodosCreate() {
-	title := c.GetString("title")
-	detail := c.GetString("detail")
+	// TODO:
+	// Read the form parametes "title" and "detail".
+	// Call models.TodosCreate function to create a new TODO item
 
-	models.TodosCreate(title, detail)
 	c.Redirect("/todos", http.StatusFound)
 }
 
@@ -39,8 +39,9 @@ func (c *TodosController) TodosShow() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
-	todo := models.TodosFind(id)
-	c.Data["todo"] = todo
+	// TODO:
+	// Retrieve the TODO item from the identifier "id"
+	// Set the retrieved todo item to c.Data["todo"]
 	c.TplName = "todos/show.tpl"
 }
 
@@ -50,8 +51,9 @@ func (c *TodosController) TodosEditPage() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
-	todo := models.TodosFind(id)
-	c.Data["todo"] = todo
+	// TODO:
+	// Retrieve the TODO item from the identifier "id"
+	// Set the retrieved todo item to c.Data["todo"]
 	c.TplName = "todos/edit.tpl"
 }
 
@@ -64,8 +66,9 @@ func (c *TodosController) TodosUpdate() {
 	todo := models.TodosFind(id)
 	title := c.GetString("title")
 	detail := c.GetString("detail")
-	todo.Update(title, detail)
-	c.Redirect("/todos/"+idStr, http.StatusFound)
+	// TODO:
+	// Call Update() function defined in the model to update the record.
+	// Redirect to the show page - /todos/(id)
 }
 
 func (c *TodosController) TodosDelete() {

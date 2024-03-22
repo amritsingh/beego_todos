@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/beego/beego/v2/client/orm"
@@ -24,24 +23,19 @@ func (n *Todo) TableName() string {
 func TodosGetAll() *[]*Todo {
 	o := orm.NewOrm()
 	var todos []*Todo
-	numRows, err := o.QueryTable(new(Todo)).
-		Filter("deleted_at__isnull", true).
-		OrderBy("-updated_at").
-		All(&todos)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(numRows)
+	// TODO:
+	// Query the table todos (using model Todo) into "todos" variable
+	// Query should fetch all records where deleted_at is NULL and sort by updated_at descending
+
 	return &todos
 }
 
 func TodosCreate(title string, detail string) {
 	o := orm.NewOrm()
-	currTime := time.Now()
-	todo := Todo{Title: title, Detail: detail, CreatedAt: currTime, UpdatedAt: currTime}
-	id, err := o.Insert(&todo)
-	fmt.Println(id)
-	fmt.Println(err)
+	// TODO:
+	// Insert a new record in the todos table.
+	// Set the title and detail columns to the parameters passed to this function.
+	// Don't forget to set created_at and updated_at timestamps.
 }
 
 func TodosFind(id uint64) *Todo {
@@ -57,26 +51,23 @@ func TodosFind(id uint64) *Todo {
 
 func (todo *Todo) Update(title string, detail string) {
 	o := orm.NewOrm()
-	todo.Title = title
-	todo.Detail = detail
-	todo.UpdatedAt = time.Now()
-	o.Update(todo)
+	// TODO:
+	// Update the values of title, detail and updated_at
 }
 
 func TodosMarkComplete(id uint64, complete bool) {
 	o := orm.NewOrm()
-	todo := TodosFind(id)
-	if complete {
-		*todo.CompletedAt = time.Now()
-	} else {
-		todo.CompletedAt = nil
-	}
-	todo.UpdatedAt = time.Now()
-	o.Update(todo)
+	// TODO:
+	// If the "complete" variable is true, set completed_at column to current time
+	// else set it to NULL. This will mark the TODO item completed or not completed.
+	// Don't foget to set updated_at to current time.
 }
 
 func TodosMarkDelete(id uint64) {
 	o := orm.NewOrm()
+	// TODO:
+	// To mark a TODO deleted, set deleted_at to current time.
+	// Don't foget to set updated_at to current time.
 	todo := TodosFind(id)
 	todo.DeletedAt = time.Now()
 	todo.UpdatedAt = time.Now()
