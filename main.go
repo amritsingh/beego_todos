@@ -16,7 +16,7 @@ import (
 var AuthFilter = func(ctx *context.Context) {
 	userID := ctx.Input.Session("user_id")
 	if userID == nil {
-		if strings.HasPrefix(ctx.Input.URI(), "/notes") {
+		if strings.HasPrefix(ctx.Input.URI(), "/todos") {
 			ctx.Redirect(http.StatusTemporaryRedirect, "/login")
 			return
 		}
