@@ -3,8 +3,6 @@ package main
 import (
 	"beego_todos/models"
 	_ "beego_todos/routers"
-	"net/http"
-	"strings"
 
 	"github.com/beego/beego/v2/server/web/context"
 
@@ -14,17 +12,16 @@ import (
 )
 
 var AuthFilter = func(ctx *context.Context) {
-	userID := ctx.Input.Session("user_id")
-	if userID == nil {
-		if strings.HasPrefix(ctx.Input.URI(), "/notes") {
-			ctx.Redirect(http.StatusTemporaryRedirect, "/login")
-			return
-		}
-	} else {
-		ctx.Input.SetData("LoggedIn", true)
-		user := models.UserFind(userID.(uint64))
-		ctx.Input.SetData("username", user.Username)
-	}
+	// TODO:
+	// Step 1: Get the user ID from the session by accessing.
+	// Step 2: If the user is not logged in:
+	//         Check if the request URI starts with "/todos"
+	// 		   If the request URI starts with "/todos",
+	//         redirect the user to the login page ("/login").
+	// Step 3: If the user is logged in:
+	//         - Set the "LoggedIn" flag in the request context data to true.
+	//         - Retrieve the user details from the database using the user ID by calling the appropriate model function.
+	//         - Set the username in the request context data.
 }
 
 func init() {
@@ -34,7 +31,9 @@ func init() {
 	orm.RegisterModel(new(models.Todo))
 	orm.RegisterModel(new(models.User))
 
-	web.InsertFilter("*", web.BeforeRouter, AuthFilter)
+	// TODO:
+	// Uncomment the following code to add the middlewar
+	// web.InsertFilter("*", web.BeforeRouter, AuthFilter)
 }
 
 func main() {

@@ -23,7 +23,6 @@ func (u *User) TableName() string {
 func UserCheckAvailability(email string) bool {
 	o := orm.NewOrm()
 	var user User
-	fmt.Println(user.TableName())
 	o.QueryTable(new(User)).Filter("username", email).One(&user)
 	return (user.Id == 0) // if ID == 0, email is not signed up, hence available
 }
@@ -46,10 +45,8 @@ func UserFind(id uint64) *User {
 func UserCheck(email string, password string) *User {
 	var user User
 	o := orm.NewOrm()
-	fmt.Println(email)
 	err := o.QueryTable(new(User)).Filter("username", email).One(&user)
 	fmt.Println(err)
-	fmt.Println(user)
 	if user.Id == 0 {
 		return nil
 	}

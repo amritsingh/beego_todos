@@ -2,8 +2,6 @@ package controllers
 
 import (
 	"beego_todos/models"
-	"fmt"
-	"net/http"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
@@ -21,52 +19,35 @@ func (c *SessionsController) LoginPage() {
 }
 
 func (c *SessionsController) Signup() {
-	email := c.GetString("email")
-	password := c.GetString("password")
-	confirmPassword := c.GetString("confirm_password")
-
-	// Check if email already exists
-	available := models.UserCheckAvailability(email)
-	fmt.Println(available)
-	if !available {
-		c.Data["alert"] = "Email already exists!"
-		c.TplName = "sessions/signup.tpl"
-		return
-	}
-	if password != confirmPassword {
-		c.Data["alert"] = "Password and Confirm password missmatch!"
-		c.TplName = "sessions/signup.tpl"
-		return
-	}
-	user := models.UserCreate(email, password)
-	if user.Id == 0 {
-		c.Data["alert"] = "Unable to create user!"
-		c.TplName = "sessions/signup.tpl"
-	} else {
-		// Signup successful, set session
-		c.SetSession("user_id", user.Id)
-		c.Redirect("/", http.StatusSeeOther)
-	}
+	// TODO:
+	// Step 1: Fetch the email, password, and confirm password from the request parameters.
+	// Step 2: Check if the email already exists in the database.
+	//         This can be checked by calling models.UserCheckAvailability method.
+	// Step 3: If the email already exists, set an alert message accordingly in c.Data["alert"]
+	//		   and render the "sessions/signup.tpl" template.
+	// Step 4: If the password and confirm password do not match,
+	//         set an alert message indicating this mismatch
+	//         and render the "sessions/signup.tpl" template.
+	// Step 5: If the email is available and password and confirm password match,
+	//         create a new user by calling models.UserCreate.
+	// Step 6: If the user creation is successful, set the session with name "user_id" and the user's ID (user.Id),
+	//         redirect the user to the home page ("/").
+	//         If user creation fails, set an alert message and render the "sessions/signup.tpl" template.
 }
 
 func (c *SessionsController) Login() {
-	email := c.GetString("email")
-	password := c.GetString("password")
-	user := models.UserCheck(email, password)
-	if user != nil {
-		// Set session
-		c.SetSession("user_id", user.Id)
-		c.Redirect("/", http.StatusFound)
-	} else {
-		c.Data["alert"] = "Email and/or password mismatch!"
-		c.TplName = "sessions/login.tpl"
-	}
+	// TODO:
+	// Step 1: Get the email and password from the request parameters.
+	// Step 2: Authenticate the user by calling models.UserCheck(). This function returns the user if the user exists and password matches.
+	//         If the user exists, set the session with name "user_id" and the user's ID (user.Id),
+	//         redirect the user to the home page ("/").
+	//         If authentication fails, set an alert message indicating "Email and/or password mismatch!" and render the "sessions/login.tpl" template.
 }
 
 func (c *SessionsController) Logout() {
-	// Clear the session
-	c.DelSession("user_id")
-	c.Redirect("/login", http.StatusTemporaryRedirect)
+	// TODO:
+	// Clear the session by calling c.DelSession("user_id").
+	// Redirect the user to the login page ("/login").
 }
 
 func GetUserFromSession(c *beego.Controller) *models.User {
