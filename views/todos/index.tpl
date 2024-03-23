@@ -26,36 +26,41 @@
         <br/>
         
         <div class="accordion" id="accordionTodos">
-            {{ with .todos }}
-                {{ range . }}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" 
-                            id="panelsStayOpen-heading-{{.Id}}" 
-                            data-bs-toggle="collapse" 
-                            data-bs-target="#panelsStayOpen-collapse-{{.Id}}" 
-                            aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{.Id}}">
-                            <div class="flex-parent-element-{{.Id}} accordion-button collapsed">
-                                <input class="flex-child-element-{{.Id}} form-check-input me-1" 
-                                    type="checkbox" value="" 
-                                    id="checkbox-{{.Id}}" 
-                                    name="checkbox-{{.Id}}" onClick="todoStateChange(this)"
-                                   {{if .CompletedAt}}
-                                        checked
-                                   {{end}}
-                                ><strong>{{.Title}}</strong></input>
-                            </div>
-                        </h2>
-                        <div id="panelsStayOpen-collapse-{{.Id}}" 
-                            class="accordion-collapse collapse" 
-                            aria-labelledby="panelsStayOpen-heading-{{.Id}}">
-                            <div class="accordion-body">
-                                {{.Detail}}
-                                <p><a class="btn btn-outline-primary" href="/todos/{{.Id}}" role="button">View</a></p>
+            {{ if len .todos }}
+                {{ with .todos }}
+                    {{ range . }}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" 
+                                id="panelsStayOpen-heading-{{.Id}}" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#panelsStayOpen-collapse-{{.Id}}" 
+                                aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{.Id}}">
+                                <div class="flex-parent-element-{{.Id}} accordion-button collapsed">
+                                    <input class="flex-child-element-{{.Id}} form-check-input me-1" 
+                                        type="checkbox" value="" 
+                                        id="checkbox-{{.Id}}" 
+                                        name="checkbox-{{.Id}}" onClick="todoStateChange(this)"
+                                    {{if .CompletedAt}}
+                                            checked
+                                    {{end}}
+                                    ><strong>{{.Title}}</strong></input>
+                                </div>
+                            </h2>
+                            <div id="panelsStayOpen-collapse-{{.Id}}" 
+                                class="accordion-collapse collapse" 
+                                aria-labelledby="panelsStayOpen-heading-{{.Id}}">
+                                <div class="accordion-body">
+                                    {{.Detail}}
+                                    <p><a class="btn btn-outline-primary" href="/todos/{{.Id}}" role="button">View</a></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {{end}}
                 {{end}}
-            {{end}}
+            {{ else }}
+                <h3>No TODO items yet. </h3>
+            {{ end }}
+            
         </div>
     {{ template "layouts/footer.tpl" .}}
 {{ end }}

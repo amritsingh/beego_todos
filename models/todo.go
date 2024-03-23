@@ -15,16 +15,18 @@ type Todo struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   time.Time
+	UserId      uint64
 }
 
 func (n *Todo) TableName() string {
 	return "todos"
 }
 
-func TodosGetAll() *[]*Todo {
+func TodosGetAll(user *User) *[]*Todo {
 	o := orm.NewOrm()
 	var todos []*Todo
 	numRows, err := o.QueryTable(new(Todo)).
+		Filter("user_id", user.Id).
 		Filter("deleted_at__isnull", true).
 		OrderBy("-updated_at").
 		All(&todos)
@@ -35,18 +37,18 @@ func TodosGetAll() *[]*Todo {
 	return &todos
 }
 
-func TodosCreate(title string, detail string) {
+func TodosCreate(user *User, title string, detail string) {
 	o := orm.NewOrm()
 	currTime := time.Now()
-	todo := Todo{Title: title, Detail: detail, CreatedAt: currTime, UpdatedAt: currTime}
+	todo := Todo{Title: title, Detail: detail, CreatedAt: currTime, UpdatedAt: currTime, UserId: user.Id}
 	id, err := o.Insert(&todo)
 	fmt.Println(id)
 	fmt.Println(err)
 }
 
-func TodosFind(id uint64) *Todo {
+func TodosFind(user *User, id uint64) *Todo {
 	o := orm.NewOrm()
-	todo := Todo{Id: id}
+	todo := Todo{Id: id, UserId: user.Id}
 	err := o.Read(&todo)
 	if err != nil {
 		return nil
@@ -63,9 +65,9 @@ func (todo *Todo) Update(title string, detail string) {
 	o.Update(todo)
 }
 
-func TodosMarkComplete(id uint64, complete bool) {
+func TodosMarkComplete(user *User, id uint64, complete bool) {
 	o := orm.NewOrm()
-	todo := TodosFind(id)
+	todo := TodosFind(user, id)
 	if complete {
 		*todo.CompletedAt = time.Now()
 	} else {
@@ -75,9 +77,9 @@ func TodosMarkComplete(id uint64, complete bool) {
 	o.Update(todo)
 }
 
-func TodosMarkDelete(id uint64) {
+func TodosMarkDelete(user *User, id uint64) {
 	o := orm.NewOrm()
-	todo := TodosFind(id)
+	todo := TodosFind(user, id)
 	todo.DeletedAt = time.Now()
 	todo.UpdatedAt = time.Now()
 	o.Update(todo)

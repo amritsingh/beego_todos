@@ -15,8 +15,9 @@ type TodosController struct {
 }
 
 func (c *TodosController) TodosIndex() {
+	user := GetUserFromSession(&c.Controller)
 	// Get all todos
-	todos := models.TodosGetAll()
+	todos := models.TodosGetAll(user)
 	c.Data["todos"] = todos
 	c.TplName = "todos/index.tpl"
 }
@@ -26,10 +27,11 @@ func (c *TodosController) TodosNewForm() {
 }
 
 func (c *TodosController) TodosCreate() {
+	user := GetUserFromSession(&c.Controller)
 	title := c.GetString("title")
 	detail := c.GetString("detail")
 
-	models.TodosCreate(title, detail)
+	models.TodosCreate(user, title, detail)
 	c.Redirect("/todos", http.StatusFound)
 }
 
@@ -39,7 +41,8 @@ func (c *TodosController) TodosShow() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
-	todo := models.TodosFind(id)
+	user := GetUserFromSession(&c.Controller)
+	todo := models.TodosFind(user, id)
 	c.Data["todo"] = todo
 	c.TplName = "todos/show.tpl"
 }
@@ -50,7 +53,8 @@ func (c *TodosController) TodosEditPage() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
-	todo := models.TodosFind(id)
+	user := GetUserFromSession(&c.Controller)
+	todo := models.TodosFind(user, id)
 	c.Data["todo"] = todo
 	c.TplName = "todos/edit.tpl"
 }
@@ -61,7 +65,8 @@ func (c *TodosController) TodosUpdate() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
-	todo := models.TodosFind(id)
+	user := GetUserFromSession(&c.Controller)
+	todo := models.TodosFind(user, id)
 	title := c.GetString("title")
 	detail := c.GetString("detail")
 	todo.Update(title, detail)
@@ -74,7 +79,8 @@ func (c *TodosController) TodosDelete() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
-	models.TodosMarkDelete(id)
+	user := GetUserFromSession(&c.Controller)
+	models.TodosMarkDelete(user, id)
 	c.Ctx.ResponseWriter.WriteHeader(http.StatusOK)
 }
 
@@ -85,6 +91,7 @@ func (c *TodosController) TodosComplete() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
-	models.TodosMarkComplete(id, state == "true")
+	user := GetUserFromSession(&c.Controller)
+	models.TodosMarkComplete(user, id, state == "true")
 	c.Ctx.ResponseWriter.WriteHeader(http.StatusAccepted)
 }

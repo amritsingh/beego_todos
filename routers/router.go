@@ -16,4 +16,11 @@ func init() {
 	beego.Router("/todos/:id", &controllers.TodosController{}, "post:TodosUpdate")
 	beego.Router("/todos/:id/complete", &controllers.TodosController{}, "post:TodosComplete")
 	beego.Router("/todos/:id", &controllers.TodosController{}, "delete:TodosDelete")
+
+	beego.Router("/signup", &controllers.SessionsController{}, "get:SignupPage")
+	beego.Router("/login", &controllers.SessionsController{}, "get:LoginPage")
+
+	beego.Router("/signup", &controllers.SessionsController{}, "post:Signup")
+	beego.Router("/login", &controllers.SessionsController{}, "post:Login")
+	beego.Router("/logout", &controllers.SessionsController{}, "post:Logout")
 }
